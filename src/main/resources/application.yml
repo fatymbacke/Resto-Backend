@@ -1,0 +1,87 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/manage_resto
+    username: postgres
+    password: icare@dev
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/manage_resto
+    user: postgres
+    password: icare@dev
+    # ⚡ Préciser les dossiers dans l'ordre : common d'abord, dev ensuite
+    locations: classpath:db/migration/common,classpath:db/migration/dev
+    baseline-on-migrate: true
+    validate-migration-naming: true
+    debug: true
+    out-of-order: true
+    clean-disabled: true
+    validate-on-migrate: true
+
+  main:
+    web-application-type: reactive
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+  codec:
+    max-in-memory-size: 10MB
+
+server:
+  port: 8080
+
+security:
+  jwt:
+    secret: MySuperSecretKeyMySuperSecretKey123
+    expiration-ms: 3600000
+
+logging:
+  level:
+    # Vos packages personnalisés
+   # com.app.manage_restaurant: DEBUG
+   # com.app.manage_restaurant.security: TRACE
+    
+    # Spring Framework
+    org.springframework: INFO
+    org.springframework.security: DEBUG
+   # org.springframework.web: DEBUG
+   # org.springframework.web.reactive: DEBUG
+    com.votrepackage.repository: TRACE
+    org.springframework.data.mongodb.core: DEBUG
+    # Base de données reactive
+    io.r2dbc.spi: DEBUG
+    org.springframework.r2dbc: DEBUG
+    org.springframework.data.r2dbc: DEBUG
+    
+    # WebFlux
+  #  reactor.netty: DEBUG
+   # reactor.core.publisher: DEBUG
+    
+    # SQL et requêtes
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.r2dbc.core: DEBUG
+    org.springframework.jdbc.core: DEBUG
+    org.springframework.r2dbc.core.DefaultDatabaseClient: TRACE
+
+  # Pattern de console
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: swagger-ui/index.html
+
+file:
+  upload-dir: D:/APP_TEST/uploads
+  base-url:
+    local: http://localhost:8080/files/
+    prod: https://cdn.mondomaine.com/
+
+filter:
+    exclude-tables: opening_hour,restaurant_opening_hour
+   # exclude-columns: owner_code,resto_code
